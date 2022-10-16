@@ -39,8 +39,8 @@ if [[ "$1" = "setup" ]];then
 	tar xzvf aliyun-cli-linux-latest-amd64.tgz
 	echo 复制到系统文件夹
 	cp aliyun /usr/local/bin
-	echo cli初始化设置
 	echo 安装阿里云cli结束
+	exit 5
 elif [[ "$1" = "configure" ]];then
     echo "配置阿里云SDK "
     aliyun configure set \
