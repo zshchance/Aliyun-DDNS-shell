@@ -57,6 +57,7 @@ cg=$(aliyun version 2>&1)
 cg=${cg:0:1}
 if ! [[ "$cg" -gt 0 ]] 2>/dev/null; then
 	echo "请先运行 sudo ./aliyunDDNS.sh setup 完成阿里云DDNS cli的安装, 然后使用命令./aliyunDDNS.sh configure配置cli的参数"
+	exit 7
 fi
  
 ####获取本地ip地址
