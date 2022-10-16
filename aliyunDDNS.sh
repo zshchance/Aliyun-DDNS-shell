@@ -5,7 +5,7 @@ aliddns_name="***"								#子域名, 例如abc.def.com, 这里填abc
 aliddns_domain="****.***"							#域名, 例如abc.def.com, 这里填def.com
 aliddns_ak="******"								#access-key-id
 aliddns_sk="******"								#access-key-secret
-aliddns_type="A"								#A是IPV4, AAAA是IPV6
+aliddns_type="AAAA"								#A是IPV4, AAAA是IPV6
 #################################
 
 ####获取本机IPV4的网址
@@ -32,24 +32,31 @@ cpu="amd64"
 ####以下内容非必要不要修改###########
 #####################################
 
-####若未安装阿里云cli，则安装阿里云cli
-cg=$(aliyun version 2>&1)
-cg=${cg:0:1}
-if ! [[ "$cg" -gt 0 ]] 2>/dev/null; then
-		echo 下载阿里cli
-		wget https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-$cpu.tgz
-		echo 解压
-		tar xzvf aliyun-cli-linux-latest-amd64.tgz
-		echo 复制到系统文件夹
-		cp aliyun /usr/local/bin
-		echo cli初始化设置
-		aliyun configure set \
+if [[ "$1" = "setup" ]];then
+	echo 下载阿里cli
+	wget https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-$cpu.tgz
+	echo 解压
+	tar xzvf aliyun-cli-linux-latest-amd64.tgz
+	echo 复制到系统文件夹
+	cp aliyun /usr/local/bin
+	echo cli初始化设置
+	echo 安装阿里云cli结束
+elif [[ "$1" = "configure" ]];then
+    echo "配置阿里云SDK "
+    aliyun configure set \
 	  --profile akProfile \
 	  --mode AK \
 	  --region cn-hangzhou \
 	  --access-key-id $aliddns_ak \
 	  --access-key-secret $aliddns_sk
-	  echo 安装阿里云cli结束
+    echo "配置完成 "
+fi
+
+####若未安装阿里云cli，则安装阿里云cli
+cg=$(aliyun version 2>&1)
+cg=${cg:0:1}
+if ! [[ "$cg" -gt 0 ]] 2>/dev/null; then
+	echo "请先运行 sudo ./aliyunDDNS.sh setup 完成阿里云DDNS cli的安装, 然后使用命令./aliyunDDNS.sh configure配置cli的参数"
 fi
  
 ####获取本地ip地址
@@ -65,8 +72,8 @@ echo "本地IP地址：$ip"
 
 ####读取阿里云解析记录
 echo "读取阿里云解析记录：$aliddns_name.$aliddns_domain"
-#server_ip=`/root/aliyun alidns  DescribeDomainRecords --DomainName $aliddns_domain --RRKeyWord $aliddns_name --Type AAAA | grep -E "Value" | cut -d '"' -f4`
-text=`/root/aliyun alidns  DescribeDomainRecords --DomainName $aliddns_domain --RRKeyWord $aliddns_name --Type $aliddns_type`
+#server_ip=`aliyun alidns  DescribeDomainRecords --DomainName $aliddns_domain --RRKeyWord $aliddns_name --Type AAAA | grep -E "Value" | cut -d '"' -f4`
+text=`aliyun alidns  DescribeDomainRecords --DomainName $aliddns_domain --RRKeyWord $aliddns_name --Type $aliddns_type`
 server_ip=`echo $text  | grep -Eo '"Value": "[0123456789abcdef:]+"' | cut -d'"' -f4`
 recordid=`echo $text  | grep -Eo '"RecordId": "[0-9]+"' | cut -d':' -f2 | tr -d '"'`
 echo "读取到解析记录：$server_ip"
