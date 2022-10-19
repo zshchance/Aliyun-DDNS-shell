@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ####设置自己的阿里云DDNS信息
 aliddns_name="***"								#子域名, 例如abc.def.com, 这里填abc
@@ -36,7 +36,7 @@ if [[ "$1" = "setup" ]];then
 	echo 下载阿里cli
 	wget https://aliyuncli.alicdn.com/aliyun-cli-linux-latest-$cpu.tgz
 	echo 解压
-	tar xzvf aliyun-cli-linux-latest-amd64.tgz
+	tar xzvf aliyun-cli-linux-latest-$cpu.tgz
 	echo 复制到系统文件夹
 	cp aliyun /usr/local/bin
 	echo 安装阿里云cli结束
