@@ -70,7 +70,13 @@ else
 	exit 1
 fi
 echo "本地IP地址：$ip"
-
+aliyun configure set \
+	  --profile akProfile \
+	  --mode AK \
+	  --region cn-hangzhou \
+	  --access-key-id $aliddns_ak \
+	  --access-key-secret $aliddns_sk
+   
 ####读取阿里云解析记录
 echo "读取阿里云解析记录：$aliddns_name.$aliddns_domain"
 #server_ip=`aliyun alidns  DescribeDomainRecords --DomainName $aliddns_domain --RRKeyWord $aliddns_name --Type AAAA | grep -E "Value" | cut -d '"' -f4`
