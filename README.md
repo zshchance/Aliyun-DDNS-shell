@@ -18,7 +18,7 @@
 3. 保存文件，并把aliyunDDNS.sh拷贝到主机中，可以用winscp或tftp等，只要拷进去就行  
 4. 添加执行权限 chmod +x aliyunDDNS.sh
 5. 执行脚本sudo ./aliyunDDNS.sh setup 完成aliyun cli的安装
-6. 执行脚本./aliyunDDNS.sh configure 完成aliyun ak sk初始化配置
+6. 执行脚本./aliyunDDNS.sh configure 完成aliyun ak sk初始化配置(2023-6-15更新脚本，该步操作可省略)
 7. 执行脚本./aliyunDDNS.sh 完成域名解析的更新
 8. 如果运行成功，设置crontab定时运行，3分钟或5分钟跑一次都可以
 
